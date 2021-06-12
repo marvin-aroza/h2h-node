@@ -1,0 +1,9 @@
+1) multer  :- for image upload 
+2) body-parser :- for decrypting req body
+3) cors :- to enable cross platform request
+4) dotenv :- to manage environment variables
+5) mongoose :- client to connect mongodb to node
+6) express :- for building api's with express extension
+7) bcryptjs :- For encrypting the password
+8) nodemon :- for development to watch changes in the server and build code automatically
+9) jsonwebtoken :- for authentication token creation

@@ -1,0 +1,29 @@
+
+1) Landing page
+2) Login/Register through home page
+3) Registration page
+4) Login Page
+5) After Login - Home page
+6) Page will fetch posts lists from db and show them
+7) Left side there will be sections such as Food related, Rental home, Clothing, jobs, medicinal help, Blogs
+8) User can post about such things from Add posts. They can add images, videos, blogs etc.
+9) Some users can put their blogs about something related to current situation. How to stay safe etc.
+10) User can communicate to the needy people through contact details.
+11) Add profile image
+12) Change password 
+
+
+23rd MAy 2021
+1) Angular - login & registration for admin (
+*Login - forms, form submit, store login detail in localstorage 
+-> redirect to home page - Authguard creation
+*Registration 
+2) Verification of routes based on role in Node apis (Middleware)
+
+New modules
+1. News (R&D) - CRUD -> verification
+2. Add edit delete users from Admin view
+3. Roles add -> Superadmin , admin , user
+Features
+1. Notify admin about post-news creation
+2. User's post status - receive an email about post status
