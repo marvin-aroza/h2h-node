@@ -1,6 +1,7 @@
 const express=require('express');
 const app = express();
 
+const port = process.env.PORT || 3000;
 
 const bodyParser = require('body-parser');
 const mongoconnect = require('mongoose');
@@ -48,6 +49,6 @@ app.use('/public',express.static('public'));
 app.use('/images', express.static('images')); 
 
 //Server poor
-app.listen(process.env.CONNECT_PORT,()=>{
+app.listen(port,()=>{
     console.log('Port running at 3000');
 })
