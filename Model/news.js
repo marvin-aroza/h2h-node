@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
 
-const postschema=mongoose.Schema({
+const newsSchema=mongoose.Schema({
     title:{
         type:String,
         required:true,
@@ -10,15 +10,7 @@ const postschema=mongoose.Schema({
         type:String,
         trim: true
     },
-    category_id:{
-        type:mongoose.Schema.ObjectId,
-        required:true
-    },
-    subcategory_id:{
-        type:String,
-        //required:true
-    },
-    description:{
+    body:{
         type:String,
         trim: true
     },
@@ -30,13 +22,9 @@ const postschema=mongoose.Schema({
         type:String,
         trim: true
     },
-    createdBy: {
-        type: mongoose.Schema.ObjectId,
-        required: true
-    },
     isActive:{
         type:Boolean,
-        default:true
+        default:false
     },
     isArchived:{
         type:Boolean,
@@ -49,16 +37,9 @@ const postschema=mongoose.Schema({
     updatedAt:{
         type:Date,
         default:Date.now()
-    },
-    status:{
-        type:String,
-        default:"pending"
-    },
-    comments:{
-        type:String
     }
 })
 
 
-const Post = mongoose.model('Post',postschema)
-module.exports = Post
+const News = mongoose.model('News',newsSchema)
+module.exports = News

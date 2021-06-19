@@ -1,8 +1,9 @@
 const express = require('express')
 const router = express.Router();
-
+const mongoose = require('mongoose');
 //DB schema import
 const { Discussion, SubDiscussion } = require('../../Model/discussion');
+const  User = require('../../Model/user');
 const validateToken = require('../../Middleware/auth-middleware').validateToken;
 
 //Add Comment
@@ -35,9 +36,22 @@ router.post('/', validateToken, async (req,res)=>{
 
 
 //get Comment list
-router.get("/", async (req, res) => {
+router.get("/list/:postId", async (req, res) => {
     try {
-      const discussion = await Discussion.find();
+      // const discussion = await Discussion.find();
+      console.log(req.params.postId);
+		const discussion = await Discussion.aggregate([
+			{$match: {postId:mongoose.Types.ObjectId(req.params.postId)}},
+			{
+				$lookup: {
+					from: User.collection.name,
+					localField: "createdBy",
+					foreignField: "_id",
+					as: "user",
+				}
+			},
+			{ $sort: { _id: -1 } }
+		]);
       res.status(200).json({
         code: 200,
         message: "Comment list fetched successfully",

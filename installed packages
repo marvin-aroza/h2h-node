@@ -7,3 +7,5 @@
 7) bcryptjs :- For encrypting the password
 8) nodemon :- for development to watch changes in the server and build code automatically
 9) jsonwebtoken :- for authentication token creation
+9) Nodemailer:- for email (npm install nodemailer)
+                    reference:- https://medium.com/coox-tech/send-mail-using-node-js-express-js-with-nodemailer-93f4d62c83ee

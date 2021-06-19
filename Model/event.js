@@ -1,42 +1,52 @@
 const mongoose = require('mongoose')
 
-const postschema=mongoose.Schema({
+const eventSchema=mongoose.Schema({
     title:{
         type:String,
         required:true,
         trim: true
     },
-    subtitle:{
+    body:{
         type:String,
+        required:true,
         trim: true
     },
-    category_id:{
-        type:mongoose.Schema.ObjectId,
+    host: {
+        type:String,
         required:true
     },
-    subcategory_id:{
+    place: {
         type:String,
-        //required:true
+        required:true
     },
-    description:{
+    address: {
         type:String,
-        trim: true
+        required:true
+    },
+    startTime: {
+        type: String,
+        required: true
+    },
+    endTime: {
+        type: String,
+        required: true
+    },
+    eventDate: {
+        type: Date,
+        required: true
     },
     image:{
         type:String,
         trim: true
     },
-    video:{
+    status:{
         type:String,
-        trim: true
-    },
-    createdBy: {
-        type: mongoose.Schema.ObjectId,
-        required: true
+        trim: true,
+        default: 'Pending'
     },
     isActive:{
         type:Boolean,
-        default:true
+        default:false
     },
     isArchived:{
         type:Boolean,
@@ -49,16 +59,9 @@ const postschema=mongoose.Schema({
     updatedAt:{
         type:Date,
         default:Date.now()
-    },
-    status:{
-        type:String,
-        default:"pending"
-    },
-    comments:{
-        type:String
     }
 })
 
 
-const Post = mongoose.model('Post',postschema)
-module.exports = Post
+const Event = mongoose.model('Event',eventSchema)
+module.exports = Event

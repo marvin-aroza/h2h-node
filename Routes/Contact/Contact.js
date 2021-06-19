@@ -1,8 +1,10 @@
 const express = require('express')
 const router = express.Router();
+const mongoose = require('mongoose')
 
 //DB schema import
 const Contact = require('../../Model/contact');
+const validateToken = require("../../Middleware/auth-middleware").validateToken;
 
 //Add Post
 router.post('/', async (req,res)=>{
@@ -11,7 +13,8 @@ router.post('/', async (req,res)=>{
         name:req.body.name,
         email:req.body.email,
         message:req.body.message,
-        subject:req.body.subject
+        subject:req.body.subject,
+        contactBy: req.body.contactBy
     });
 
     try{
@@ -103,6 +106,27 @@ router.patch("/:contactId", async (req, res) => {
     }
   });
 
+   //Get contact list for user
+   router.get("/user-contact-list/", validateToken, async (req, res) => {
+    try {
+      console.log(req.decoded._id);
+      const contact = await Contact.find({ contactBy : mongoose.Types.ObjectId(req.decoded._id)});
+      res.status(200).json({
+        code: 200,
+        message: "Contact fetched successfully",
+        data: contact,
+        status: true
+      });
+    } catch (error) {
+      res.status(500).json({ 
+        code: 500,
+        message: error,
+        data: null,
+        status: false 
+      });
+    }
+  });
+
   //get indiviual contact details
 router.get("/:contactId", async (req, res) => {
     try {
@@ -142,6 +166,8 @@ router.delete("/:contactId", async (req, res) => {
       });
     }
   });
+
+ 
 
 
 module.exports = router

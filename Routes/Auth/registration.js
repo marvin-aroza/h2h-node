@@ -4,6 +4,9 @@ const crypt = require('bcryptjs')
 
 const User = require('../../Model/user');
 
+
+const sendEmail = require('../../Middleware/mailer');
+
 router.post('/register',async (req,res)=>{
     //console.log('inside register');
     var userexists = await User.findOne({email:req.body.email});
@@ -29,8 +32,19 @@ router.post('/register',async (req,res)=>{
         role:req.body.role
     });
 
+
     try{
         var response = await usr.save();
+
+        //send welcome email
+        let emailOptions = {
+            to: req.body.email,
+            subject: 'Welcome to Hand 2 Hand community',
+            firstname:req.body.firstname,
+            lastname:req.body.lastname
+        }
+        const emailResponse = sendEmail('welcome', emailOptions);
+
         res.status(200).json({
             code:200,
             message:'Registration Successfull!',
