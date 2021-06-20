@@ -69,6 +69,14 @@ router.get("/list/:catId", async (req, res) => {
 					as: "user",
 				},
 			},
+      {
+        $lookup : {
+          from : Category.collection.name,
+          localField : 'category_id' ,
+          foreignField : '_id',
+          as : 'category'
+        }
+      },
 			{ $sort: { _id: -1 } },
 		]);
 
@@ -87,6 +95,48 @@ router.get("/list/:catId", async (req, res) => {
     });
   }
 });
+
+//get Post list
+router.get("/user-list-all-approved", async (req, res) => {
+  try {
+
+		const post = await Post.aggregate([
+			{$match: { status: 'accept'}},
+			{
+				$lookup: {
+					from: User.collection.name,
+					localField: "createdBy",
+					foreignField: "_id",
+					as: "user",
+				},
+			},
+      {
+        $lookup : {
+          from : Category.collection.name,
+          localField : 'category_id' ,
+          foreignField : '_id',
+          as : 'category'
+        }
+      },
+			{ $sort: { _id: -1 } },
+		]).limit(5);
+
+    res.status(200).json({
+      code: 200,
+      message: "Post list fetched successfully",
+      data: post,
+      status: true
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      code: 500,
+      message: error,
+      data: null,
+      status: false 
+    });
+  }
+});
+
 
 //get Post list
 router.get("/all-list/:limit?", async (req, res) => {

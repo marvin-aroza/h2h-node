@@ -131,6 +131,11 @@ router.post("/", upload.any(), async (req, res) => {
 //update event info
 router.patch("/:eventId", upload.any(), async (req, res) => {
 	try {
+		let imageLink;
+		req.files.forEach(element => {
+			if(element.fieldname == 'image')
+				imageLink = element.path;
+		});
 		const event = await Event.updateOne(
 			{ _id: req.params.eventId },
 			{
@@ -143,7 +148,7 @@ router.patch("/:eventId", upload.any(), async (req, res) => {
                     startTime: req.body.startTime,
                     endTime: req.body.endTime,
 					eventDate: req.body.eventDate,
-                    image: req?.files[0]?.path
+                    image: (imageLink) ? imageLink : req.body.image
 				},
 			}
 		);
