@@ -106,6 +106,33 @@ router.patch("/:contactId", async (req, res) => {
     }
   });
 
+  //reply Contact
+router.patch("/reply/:contactId", async (req, res) => {
+  try {
+    const contact = await Contact.updateOne(
+      { _id: req.params.contactId },
+      {
+        $set: {
+          response:req.body.response,
+        },
+      }
+    );
+    res.status(200).json({
+      code: 200,
+      message: "You replied successfully",
+      data: contact,
+      status: true
+    });
+  } catch (error) {
+    res.status(500).json({ 
+      code: 500,
+      message: error,
+      data: null,
+      status: false 
+    });
+  }
+});
+
    //Get contact list for user
    router.get("/user-contact-list/", validateToken, async (req, res) => {
     try {

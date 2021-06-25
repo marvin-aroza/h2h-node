@@ -30,8 +30,16 @@ var upload = multer({storage: storage});
 
 //get User list
 router.get("/",validateToken, async (req, res) => {
+
+    let matchCondition = {}
+    if(req.query && req.query.filter) {
+      filter = req.query.filter
+      console.log("filter");
+      matchCondition = (req.query.filter !== 'null') ? {isActive:filter} : {}
+    }
+
     try {
-      const user = await User.find();
+      const user = await User.find(matchCondition);
       res.status(200).json({
         code: 200,
         message: "User list fetched successfully",

@@ -542,6 +542,8 @@ function getTemplate(template, body) {
         
         </html>`;
         return requestorEmail;
+    } else if(template == 'newsletter') {
+        return 'This is the test news letter'
     }
 }
 

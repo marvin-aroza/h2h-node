@@ -8,6 +8,7 @@ const News = require('../../Model/news');
 //Packages
 var multer  = require('multer'); // Package to upload image
 const { validateToken } = require('../../Middleware/auth-middleware');
+const handleValidationError = require('../../Helper/validators');
 
 var storage = multer.diskStorage({
     destination: (req, file, cb) => {
@@ -115,12 +116,18 @@ router.post('/', upload.any('image'), async (req,res)=>{
             status: true
         })
     } catch(err) {
-      res.status(500).json({ 
-        code: 500,
-        message: error,
-        data: null,
-        status: false 
-      });
+      if (err.name === 'ValidationError') {
+        console.log("here");
+        let messages = await handleValidationError(err);
+        res.status(422).json({ messages })
+      } else {
+        res.status(500).json({ 
+          code: 500,
+          message: err,
+          data: null,
+          status: false 
+        });
+      }
     }
 })
 

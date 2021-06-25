@@ -35,6 +35,46 @@ var upload = multer({ storage: storage });
 //get Donate list
 router.get("/:categoryId?", async (req, res) => {
 	try {
+		let matchCondition = (req.params.categoryId != null) ? {categoryId:mongoose.Types.ObjectId(req.params.categoryId),isActive:true} : {isActive:true}
+		const donate = await Donate.aggregate([
+			{$match: matchCondition},
+			{
+				$lookup: {
+					from: User.collection.name,
+					localField: "createdBy",
+					foreignField: "_id",
+					as: "user",
+				},
+			},
+			{
+				$lookup: {
+					from: Category.collection.name,
+					localField: "categoryId",
+					foreignField: "_id",
+					as: "category",
+				},
+			},
+			{ $sort: { _id: -1 } },
+		]);
+		res.status(200).json({
+			code: 200,
+			message: "Donate list fetched successfully",
+			data: donate,
+			status: true,
+		});
+	} catch (error) {
+		res.status(500).json({
+			code: 500,
+			message: error,
+			data: null,
+			status: false,
+		});
+	}
+});
+
+//get Donate list
+router.get("/admin-list/with-filter/listing/:categoryId?", async (req, res) => {
+	try {
 		let matchCondition = (req.params.categoryId != null) ? {categoryId:mongoose.Types.ObjectId(req.params.categoryId)} : {}
 		const donate = await Donate.aggregate([
 			{$match: matchCondition},
@@ -164,6 +204,15 @@ router.post("/", upload.any("image"), validateToken, async (req, res) => {
 //update Donate info
 router.patch("/:donateId", upload.any("image"), async (req, res) => {
 	try {
+
+		let imageLink = null;
+		if(req.files) {
+			req.files.forEach(element => {
+				if(element.fieldname == 'image')
+				  imageLink = element.path;
+			  });
+		}
+
 		const donate = await Donate.updateOne(
 			{ _id: req.params.donateId },
 			{
@@ -171,7 +220,7 @@ router.patch("/:donateId", upload.any("image"), async (req, res) => {
 					title: req.body.title,
 					categoryId: req.body.categoryId,
 					body: req.body.body,
-					image: req.files[0].path,
+					image: (imageLink !== null) ? imageLink : req.body.image,
 				},
 			}
 		);
@@ -179,6 +228,35 @@ router.patch("/:donateId", upload.any("image"), async (req, res) => {
 		res.status(200).json({
 			code: 200,
 			message: "Donate updated successfully",
+			data: donate,
+			status: true,
+		});
+	} catch (error) {
+		res.status(500).json({
+			code: 500,
+			message: error,
+			data: null,
+			status: false,
+		});
+	}
+});
+
+//update Donation status
+router.patch("/update-status/:donateId", upload.any("image"), async (req, res) => {
+	try {
+
+		const donate = await Donate.updateOne(
+			{ _id: req.params.donateId },
+			{
+				$set: {
+					isActive: true
+				},
+			}
+		);
+
+		res.status(200).json({
+			code: 200,
+			message: "Donation marked active successfully",
 			data: donate,
 			status: true,
 		});

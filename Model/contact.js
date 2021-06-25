@@ -28,6 +28,9 @@ const contactSchema=mongoose.Schema({
         type: Boolean,
         default: false
     },
+    response:{
+        type:String,
+    },
     createdAt:{
         type:Date,
         default:Date.now()

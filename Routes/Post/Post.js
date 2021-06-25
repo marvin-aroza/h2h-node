@@ -143,6 +143,7 @@ router.get("/all-list/:limit?", async (req, res) => {
     try {
       let limit = 100;
       let filter;
+      let matchCondition = {}
       console.log(req.params.limit);
       if(req.params.limit) {
         limit = parseInt(req.params.limit)
@@ -151,8 +152,11 @@ router.get("/all-list/:limit?", async (req, res) => {
       if(req.query) {
         filter = req.query.filter
         console.log(filter);
+        matchCondition = (req.query.filter !== 'null') ? {status:filter} : {}
       }
-      const post = await Post.aggregate([{
+      const post = await Post.aggregate([
+        {$match: matchCondition},
+        {
         $lookup : {
           from : User.collection.name,
           localField : 'createdBy' ,

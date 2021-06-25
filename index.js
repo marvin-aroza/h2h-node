@@ -40,6 +40,8 @@ const donateRoute = require('./Routes/Donate/donate');
 const newsRoute = require('./Routes/News/news');
 const eventRoute = require('./Routes/Event/event');
 const mailRoute = require('./Routes/Mailer/mailer');
+const newsletterRoute = require('./Routes/Newsletter/newsletter');
+const imageRoute = require('./Routes/Image/image');
 
 //Route middleware
 app.use('/auth',registerRoute)
@@ -57,6 +59,8 @@ app.use('/donate',donateRoute)
 app.use('/news',newsRoute)
 app.use('/event',eventRoute)
 app.use('/mail',mailRoute)
+app.use('/newsletter',newsletterRoute)
+app.use('/image',imageRoute)
 
 //These is used to allow access to the images folder
 app.use('/public',express.static('public'));  

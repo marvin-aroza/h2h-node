@@ -32,9 +32,49 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage });
 
 //get Forum list
-router.get("/:categoryId?", async (req, res) => {
+router.get("/admin-list/:categoryId?", async (req, res) => {
 	try {
 		let matchCondition = (req.params.categoryId != null) ? {categoryId:mongoose.Types.ObjectId(req.params.categoryId)} : {}
+		const forum = await Forum.aggregate([
+			{$match: matchCondition},
+			{
+				$lookup: {
+					from: User.collection.name,
+					localField: "createdBy",
+					foreignField: "_id",
+					as: "user",
+				},
+			},
+			{
+				$lookup: {
+					from: Category.collection.name,
+					localField: "categoryId",
+					foreignField: "_id",
+					as: "category",
+				},
+			},
+			{ $sort: { _id: -1 } },
+		]);
+		res.status(200).json({
+			code: 200,
+			message: "Forum list fetched successfully",
+			data: forum,
+			status: true,
+		});
+	} catch (error) {
+		res.status(500).json({
+			code: 500,
+			message: error,
+			data: null,
+			status: false,
+		});
+	}
+});
+
+//get Forum list
+router.get("/:categoryId?", async (req, res) => {
+	try {
+		let matchCondition = (req.params.categoryId != null) ? {categoryId:mongoose.Types.ObjectId(req.params.categoryId), isActive: true} : {isActive: true}
 		const forum = await Forum.aggregate([
 			{$match: matchCondition},
 			{
@@ -162,8 +202,18 @@ router.post("/", upload.any("image"), validateToken, async (req, res) => {
 });
 
 //update forum info
-router.patch("/:forumId", upload.any("image"), async (req, res) => {
+router.patch("/:forumId", upload.any(), async (req, res) => {
 	try {
+
+		let imageLink = null;
+		if(req.files) {
+			req.files.forEach(element => {
+				if(element.fieldname == 'image')
+				  imageLink = element.path;
+			  });
+		}
+		
+
 		const forum = await Forum.updateOne(
 			{ _id: req.params.forumId },
 			{
@@ -171,7 +221,7 @@ router.patch("/:forumId", upload.any("image"), async (req, res) => {
 					title: req.body.title,
 					categoryId: req.body.categoryId,
 					body: req.body.body,
-					image: req.files[0].path,
+					image: (imageLink !== null) ? imageLink : req.body.image,
 				},
 			}
 		);
@@ -179,6 +229,34 @@ router.patch("/:forumId", upload.any("image"), async (req, res) => {
 		res.status(200).json({
 			code: 200,
 			message: "Forum updated successfully",
+			data: forum,
+			status: true,
+		});
+	} catch (error) {
+		res.status(500).json({
+			code: 500,
+			message: error,
+			data: null,
+			status: false,
+		});
+	}
+});
+
+//update forum info
+router.patch("/update-status/:forumId", upload.any(), async (req, res) => {
+	try {
+		const forum = await Forum.updateOne(
+			{ _id: req.params.forumId },
+			{
+				$set: {
+					isActive: true,
+				},
+			}
+		);
+
+		res.status(200).json({
+			code: 200,
+			message: "Forum accepted successfully",
 			data: forum,
 			status: true,
 		});
