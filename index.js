@@ -9,15 +9,20 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 
 const port = process.env.PORT || 3000;
-app.use(function(req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
-    res.setHeader('Access-Control-Allow-Credentials', true);
-    next();
-});
+
+var allowlist = ['https://h2h-angular-admin.herokuapp.com/', 'https://h2h-angular.herokuapp.com/']
+var corsOptionsDelegate = function (req, callback) {
+  var corsOptions;
+  if (allowlist.indexOf(req.header('Origin')) !== -1) {
+    corsOptions = { origin: true } // reflect (enable) the requested origin in the CORS response
+  } else {
+    corsOptions = { origin: false } // disable CORS for this request
+  }
+  callback(null, corsOptions) // callback expects two parameters: error and options
+}
+
 //Package middleware
-app.use(cors());
+app.use(cors(corsOptionsDelegate));
 // app.use(bodyParser.json({limit: '50mb'}));
 // app.use(bodyParser.urlencoded());
 // app.use(bodyParser.json());
