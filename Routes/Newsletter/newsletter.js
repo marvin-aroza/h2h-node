@@ -178,7 +178,7 @@ console.log(newsletterData);
       
     subscriptions.forEach(element => {
       console.log(element.email);
-      if(element.email) {
+      if('email' in element) {
         sendEmail('newsletter', {to:element.email, subject: 'New newsletter', body: newsletterData[0].body});
       }
     });
