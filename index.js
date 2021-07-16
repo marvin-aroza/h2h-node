@@ -10,7 +10,7 @@ const nodemailer = require('nodemailer');
 
 const port = process.env.PORT || 3000;
 
-var allowlist = ['https://h2h-angular-admin.herokuapp.com/', 'https://h2h-angular.herokuapp.com/']
+var allowlist = ['https://h2h-angular-admin.herokuapp.com', 'https://h2h-angular.herokuapp.com']
 var corsOptionsDelegate = function (req, callback) {
   var corsOptions;
   if (allowlist.indexOf(req.header('Origin')) !== -1) {
