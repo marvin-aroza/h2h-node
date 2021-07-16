@@ -8,7 +8,7 @@ require('dotenv/config');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 var allowlist = ['https://h2h-angular-admin.herokuapp.com', 'https://h2h-angular.herokuapp.com']
 var corsOptionsDelegate = function (req, callback) {
@@ -76,7 +76,7 @@ app.use('/mail',mailRoute)
 app.use('/newsletter',newsletterRoute)
 app.use('/image',imageRoute)
 
-//These is used to allow access to the images folder
+//These are used to allow access to the images folder
 app.use('/public',express.static('public'));  
 app.use('/images', express.static('images')); 
 
