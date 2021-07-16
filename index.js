@@ -9,8 +9,22 @@ const cors = require('cors');
 const nodemailer = require('nodemailer');
 
 const port = process.env.PORT || 3000;
+const corsOpts = {
+    origin: '*',
+  
+    methods: [
+      'GET',
+      'POST',
+    ],
+  
+    allowedHeaders: [
+      'Content-Type',
+    ],
+  };
+
+  
 //Package middleware
-app.use(cors());
+app.use(cors(corsOpts));
 // app.use(bodyParser.json({limit: '50mb'}));
 // app.use(bodyParser.urlencoded());
 // app.use(bodyParser.json());
