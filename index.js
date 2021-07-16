@@ -27,6 +27,7 @@ mongoconnect.connect(process.env.DB_CONNECT,{
 //Routes imports
 const registerRoute = require('./Routes/Auth/registration');
 const loginRoute = require('./Routes/Auth/login');
+const passwordRoute = require('./Routes/Auth/password');
 const masterRoute = require('./Routes/Master/master');
 const postRoute = require('./Routes/Post/Post');
 const userRoute = require('./Routes/User/user');
@@ -46,6 +47,7 @@ const imageRoute = require('./Routes/Image/image');
 //Route middleware
 app.use('/auth',registerRoute)
 app.use('/login',loginRoute)
+app.use('/password',passwordRoute)
 app.use('/master',masterRoute)
 app.use('/post',postRoute)
 app.use('/user',userRoute)

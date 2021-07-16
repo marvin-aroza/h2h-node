@@ -9,7 +9,12 @@ const Post = require('../../Model/post');
 //get Notification list
 router.get("/", async (req, res) => {
     try {
-      const notification = await Notification.aggregate([{
+      const notification = await Notification.aggregate([
+        {$match: {
+          isRead: false
+        }},
+        { $sort: { _id: -1 } },
+        {
         $lookup:
         {
           from: Post.collection.name,

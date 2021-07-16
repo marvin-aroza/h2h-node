@@ -7,7 +7,7 @@ const jwttoken = require('jsonwebtoken');
 
 router.post('',async (req,res)=>{
     try{
-        var userexists = await User.findOne({email:req.body.email});
+        var userexists = await User.findOne({email:req.body.email, isActive:true});
 
         if(!userexists){
 

@@ -125,35 +125,34 @@ router.patch("/:newsletterId", async (req, res) => {
 //Add Newsletter subscription
 router.post('/subscribe-newsletter', async (req,res)=>{
 
-
-    const checkEmail = await NewsletterSubscription.find({email : req.body.email});
-
-    if(checkEmail) {
-      res.status(400).json({
-        code:400,
-        message:'Your are already subscribed to newsletter!',
-        data:null,
-        status: false
-      })
-    }
-
-    const subscriptions = new NewsletterSubscription({
-        email:req.body.email,
-    });
-
     try{
+
+      const checkEmail = await NewsletterSubscription.find({email : req.body.email});
+      if(checkEmail.length > 0) {
+        return res.status(400).json({
+          code:400,
+          message:'Your are already subscribed to newsletter!',
+          data:null,
+          status: false
+        })
+      }
+
+      const subscriptions = new NewsletterSubscription({
+          email:req.body.email,
+      });
+
         var response = await subscriptions.save();
 
-        res.status(200).json({
+        return res.status(200).json({
             code:200,
             message:'Subscribed to Newsletters successfully..!',
             data:response,
             status: true
         })
     } catch(err) {
-      res.status(500).json({ 
+      return res.status(500).json({ 
         code: 500,
-        message: error,
+        message: err,
         data: null,
         status: false 
       });
@@ -173,12 +172,13 @@ router.post('/send-newsletter/:newsletterId', async (req,res)=>{
     });
 
   const subscriptions = await NewsletterSubscription.find();
+  const newsletterData = await Newsletter.find({ _id: req.params.newsletterId });
 
   try{
       
     subscriptions.forEach(element => {
       console.log(element.email);
-      sendEmail('newsletter', {to:element.email, subject: 'New newsletter'});
+      sendEmail('newsletter', {to:element.email, subject: 'New newsletter', body: newsletterData.body});
     });
 
       res.status(200).json({

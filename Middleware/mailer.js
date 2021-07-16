@@ -10,14 +10,14 @@ const transporter = nodemailer.createTransport({
 	host: "smtp.gmail.com",
 	auth: {
 		user: "vamore5996@gmail.com",
-		pass: "V@ibhavi511",
+		pass: "V@ibhavi511"
 	},
 	secure: true, // upgrades later with STARTTLS -- change this based on the PORT
 });
 
 function sendEmail(status, body) {
 	const mailData = {
-		from: "marvinaroza@gmail.com",
+		from: "vamore5996@gmail.com",
 		to: body.to,
 		subject: body.subject,
 		// text: text,
@@ -126,7 +126,7 @@ function getTemplate(template, body) {
                                                     <!-- Button Start -->
                                                     <td width="300" align="center" height="52">
                                                         <div style="background-image: url(https://github.com/lime7/responsive-html-template/blob/master/index/intro__btn.png?raw=true); background-size: 100% 100%; background-position: center center; width: 225px;">
-                                                            <a  target="`+angular_user+`" width="160" height="52" border="0" bgcolor="#009789" style="border: none; outline: none; display: block; width:160px; height: 52px; text-transform: uppercase; text-decoration: none; font-size: 17px; line-height: 52px; color: #ffffff; font-family: Verdana, Geneva, sans-serif; text-align: center; background-color: #009789;  -webkit-text-size-adjust:none;">
+                                                            <a  href="`+angular_user+`" width="160" height="52" border="0" bgcolor="#009789" style="border: none; outline: none; display: block; width:160px; height: 52px; text-transform: uppercase; text-decoration: none; font-size: 17px; line-height: 52px; color: #ffffff; font-family: Verdana, Geneva, sans-serif; text-align: center; background-color: #009789;  -webkit-text-size-adjust:none;">
                                                                 Visit now
                                                             </a>
                                                         </div>
@@ -151,6 +151,7 @@ function getTemplate(template, body) {
         </html>`;
 		return welcomeEmail;
 	} else if (template == "post") {
+        console.log("came inside email template");
 		const postEmail = `
         <html lang="en">
         <head>
@@ -241,7 +242,7 @@ function getTemplate(template, body) {
                                                     <!-- Button Start -->
                                                     <td width="300" align="center" height="52">
                                                         <div style="background-image: url(https://github.com/lime7/responsive-html-template/blob/master/index/intro__btn.png?raw=true); background-size: 100% 100%; background-position: center center; width: 225px;">
-                                                            <a target="`+angular_admin+`post" width="160" height="52" border="0" bgcolor="#009789" style="border: none; outline: none; display: block; width:160px; height: 52px; text-transform: uppercase; text-decoration: none; font-size: 17px; line-height: 52px; color: #ffffff; font-family: Verdana, Geneva, sans-serif; text-align: center; background-color: #009789;  -webkit-text-size-adjust:none;">
+                                                            <a href="`+angular_admin+`post/post-view/`+body.postId+`" width="160" height="52" border="0" bgcolor="#009789" style="border: none; outline: none; display: block; width:160px; height: 52px; text-transform: uppercase; text-decoration: none; font-size: 17px; line-height: 52px; color: #ffffff; font-family: Verdana, Geneva, sans-serif; text-align: center; background-color: #009789;  -webkit-text-size-adjust:none;">
                                                                 Go to Post
                                                             </a>
                                                         </div>
@@ -364,7 +365,7 @@ function getTemplate(template, body) {
                                         <div border="0" style="border: none; height: 60px;">
                                           <p
                                             style="font-size: 18px; line-height: 24px; font-family: Verdana, Geneva, sans-serif; color: #ffffff; text-align: center; mso-table-lspace:0;mso-table-rspace:0;">
-                                            Your Donation has been sent please find the details below
+                                            Your Donation has been requested please find the details below
                                           </p>
                                         </div>
                                       </td>
@@ -543,7 +544,7 @@ function getTemplate(template, body) {
         </html>`;
         return requestorEmail;
     } else if(template == 'newsletter') {
-        return 'This is the test news letter'
+        return body.body;
     }
 }
 
