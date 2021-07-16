@@ -173,12 +173,12 @@ router.post('/send-newsletter/:newsletterId', async (req,res)=>{
 
   const subscriptions = await NewsletterSubscription.find();
   const newsletterData = await Newsletter.find({ _id: req.params.newsletterId });
-
+console.log(newsletterData);
   try{
       
     subscriptions.forEach(element => {
       console.log(element.email);
-      sendEmail('newsletter', {to:element.email, subject: 'New newsletter', body: newsletterData.body});
+      sendEmail('newsletter', {to:element.email, subject: 'New newsletter', body: newsletterData[0].body});
     });
 
       res.status(200).json({
