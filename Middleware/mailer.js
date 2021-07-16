@@ -544,7 +544,7 @@ function getTemplate(template, body) {
         </html>`;
         return requestorEmail;
     } else if(template == 'newsletter') {
-        return body.body;
+        return body;
     }
 }
 
