@@ -9,8 +9,17 @@ const passwordResetToken = require("../../Model/passwordReset");
 
 const sendEmail = require("../../Middleware/mailer");
 const angular_admin = process.env.ANGULAR_ADMIN
+const angular_user = process.env.ANGULAR_USER
 
-router.post("/reset-password-link", async function (req, res) {
+router.post("/reset-password-link/:type?", async function (req, res) {
+	var type = 'admin'
+	console.log("passs");
+	console.log(req.query.type);
+
+	if(req.query) {
+		type = req.query.type
+	}
+
 	if (!req.body.email) {
 		return res.status(500).json({ message: "Email is required" });
 	}
@@ -54,10 +63,12 @@ router.post("/reset-password-link", async function (req, res) {
 				pass: "V@ibhavi511",
 			},
 		});
+
+		
 		var mailOptions = {
 			to: user.email,
 			from: "your email",
-			subject: "Node.js Password Reset",
+			subject: "Password Reset",
 			text:
 				"You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
 				"Please click on the following link, or paste this into your browser to complete the process:\n\n" +
@@ -66,6 +77,21 @@ router.post("/reset-password-link", async function (req, res) {
 				"\n\n" +
 				"If you did not request this, please ignore this email and your password will remain unchanged.\n",
 		};
+
+		if(type == 'user') {
+			var mailOptions = {
+				to: user.email,
+				from: "your email",
+				subject: "Password Reset",
+				text:
+					"You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n" +
+					"Please click on the following link, or paste this into your browser to complete the process:\n\n" +
+					""+angular_user+"password/reset-password/" +
+					resettoken.resettoken +
+					"\n\n" +
+					"If you did not request this, please ignore this email and your password will remain unchanged.\n",
+			};
+		}
 		transporter.sendMail(mailOptions, (err, info) => {});
 	});
 });

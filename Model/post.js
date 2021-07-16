@@ -56,6 +56,10 @@ const postschema=mongoose.Schema({
     },
     comments:{
         type:String
+    },
+    isPopular: {
+        type: Boolean,
+        default: false
     }
 })
 

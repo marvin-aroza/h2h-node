@@ -8,9 +8,9 @@ require('dotenv/config');
 const cors = require('cors');
 const nodemailer = require('nodemailer');
 
-const port = process.env.PORT || 8000;
+const port = process.env.PORT || 3000;
 
-var allowlist = ['https://h2h-angular-admin.herokuapp.com', 'https://h2h-angular.herokuapp.com']
+var allowlist = ['https://h2h-angular-admin.herokuapp.com', 'https://h2h-angular.herokuapp.com', 'http://localhost:42011', 'http://localhost:4200']
 var corsOptionsDelegate = function (req, callback) {
   var corsOptions;
   if (allowlist.indexOf(req.header('Origin')) !== -1) {
@@ -55,6 +55,7 @@ const eventRoute = require('./Routes/Event/event');
 const mailRoute = require('./Routes/Mailer/mailer');
 const newsletterRoute = require('./Routes/Newsletter/newsletter');
 const imageRoute = require('./Routes/Image/image');
+const popularPostRoute = require('./Routes/Post/Popularpost');
 
 //Route middleware
 app.use('/auth',registerRoute)
@@ -75,8 +76,9 @@ app.use('/event',eventRoute)
 app.use('/mail',mailRoute)
 app.use('/newsletter',newsletterRoute)
 app.use('/image',imageRoute)
+app.use('/popular-post',popularPostRoute)
 
-//These are used to allow access to the images folder
+//These is used to allow access to the images folder
 app.use('/public',express.static('public'));  
 app.use('/images', express.static('images')); 
 

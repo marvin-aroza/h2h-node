@@ -56,7 +56,7 @@ router.get("/", async (req, res) => {
 //get individual event details
 router.get("/:eventId", async (req, res) => {
 	try {
-        console.log(req.params.donateId);
+        // console.log(req.params.donateId);
 		const event = await Event.findById({_id:req.params.eventId})
 		res.status(200).json({
 			code: 200,
