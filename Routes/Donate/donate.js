@@ -422,7 +422,7 @@ router.get("/donate-request/confirm/:donateRequestId", async (req, res) => {
 		},
 	]);
 
-	// console.log(donationDetails);
+	console.log(donationDetails);
 
 	//send donation email
 	let emailOptions = {
