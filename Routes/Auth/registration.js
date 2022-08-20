@@ -43,7 +43,7 @@ router.post('/register',async (req,res)=>{
             firstname:req.body.firstname,
             lastname:req.body.lastname
         }
-        const emailResponse = sendEmail('welcome', emailOptions);
+        //const emailResponse = sendEmail('welcome', emailOptions);
 
         res.status(200).json({
             code:200,
